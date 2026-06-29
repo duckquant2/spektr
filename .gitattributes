@@ -1,0 +1,11 @@
+# Нормализация переводов строк: Git сам решает по содержимому
+* text=auto
+
+# Скрипт сборки — всегда Unix-переводы строк (LF).
+# Иначе Git Bash на Windows может получить CRLF и сломать запуск.
+*.sh text eol=lf
+
+# Исходники и готовые страницы — текст, LF
+*.md text eol=lf
+*.html text eol=lf
+*.lua text eol=lf

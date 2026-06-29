@@ -1,0 +1,12 @@
+# Системный мусор ОС
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Временные файлы редакторов
+*~
+*.tmp
+*.bak
+
+# Личные настройки Claude Code (не для репозитория; launch.json остаётся в git)
+.claude/settings.local.json
