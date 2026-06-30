@@ -10,3 +10,6 @@ Desktop.ini
 
 # Личные настройки Claude Code (не для репозитория; launch.json остаётся в git)
 .claude/settings.local.json
+
+# Временные файлы
+.reference/

@@ -24,7 +24,7 @@ OUT="$OUT_DIR/${BASE%.md}.html"
 mkdir -p "$OUT_DIR"                   # папка сборки создаётся при необходимости
 
 pandoc "$SRC" \
-  --from markdown \
+  --from markdown+autolink_bare_uris \
   --template "$HERE/spektr-web.html5" \
   --lua-filter "$HERE/spektr-filters.lua" \
   --section-divs \

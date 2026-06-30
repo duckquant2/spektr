@@ -83,6 +83,10 @@
     --accent:#0e7490;     /* основной цвет: ссылки, рубрики */
     --accent-2:#3b4f9e;   /* вторичный: конец градиента */
     --accent-ink:#0a5566; /* :hover */
+    /* цветовые остановки фирменного спектра */
+    --spectrum-stops:
+      #e4572e 0%, #f4a83a 17%, #f5d23c 33%, #4caf6d 50%,
+      #1aa3b0 67%, #3b6fd1 83%, var(--accent-2) 100%;
     --serif: Georgia, "PT Serif", "Noto Serif", "Times New Roman", serif;
     --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     --measure: 40rem;
@@ -113,18 +117,24 @@
 
   /* ============ МАСТХЕД / ОБЛОЖКА ============ */
   h1{
+    position:relative; padding-left:.85rem;
     font-family:var(--sans); font-weight:800; color:var(--ink);
     font-size: clamp(2.6rem, 11vw, 4.4rem); line-height:.95;
     letter-spacing:-.02em; margin:0 0 .15em;
   }
-  /* фирменная «спектральная» радужная линейка над названием */
   h1::before{
-    content:""; display:block; height:5px; border-radius:3px;
-    margin:0 0 .9rem;
-    /* финальный стоп берём из токена --accent-2, чтобы линейка зависела от темы */
-    background:linear-gradient(90deg,
-      #e4572e 0%, #f4a83a 17%, #f5d23c 33%, #4caf6d 50%,
-      #1aa3b0 67%, #3b6fd1 83%, var(--accent-2) 100%);
+    content:""; position:absolute; left:0; top:.15em; bottom:.05em;
+    width:6px;
+    background:linear-gradient(180deg, var(--spectrum-stops));
+  }
+  /* фирменная спектральная полоса-индикатор прогресса чтения (заполняется при скролле) */
+  .reading-progress{
+    position:fixed; top:0; left:0; right:0; z-index:200;
+    height:4px; background:transparent;
+  }
+  .reading-progress span{
+    display:block; width:0; height:100%;
+    background:linear-gradient(90deg, var(--spectrum-stops));
   }
   /* дескриптор под названием */
   h1 + .deck{
@@ -261,7 +271,8 @@
     html, body{ font-size:10.5pt; line-height:1.5; background:#fff; }
     .page{ max-width:none; margin:0; padding:0; }
     h1{ font-size:34pt; }
-    h1::before{ background:#000; height:4px; }
+    h1::before{ display:none !important; }
+    .reading-progress{ display:none !important; }
     h2{ font-size:19pt; break-before:page; border-top-color:#000; }
     h3{ font-size:13pt; }
     h2, h3, h4{ break-after:avoid; }
@@ -282,6 +293,7 @@
 </style>
 </head>
 <body>
+<div aria-hidden="true" class="reading-progress"><span></span></div>
 <a href="#main" class="skip-link">Перейти к содержимому</a>
 <main class="page" id="main">
 <header class="masthead">
@@ -1095,113 +1107,149 @@ href="https://www.propublica.org/article/rfk-jr-fda-removes-autism-treatments-wa
 <h3>Наука</h3>
 <ol type="1">
 <li>Nature Neuroscience — два биологических подтипа аутизма (DOI
-10.1038/s41593-026-02287-z). Разбор:
-https://www.sciencedaily.com/releases/2026/06/260602021634.htm</li>
+10.1038/s41593-026-02287-z). Разбор: <a
+href="https://www.sciencedaily.com/releases/2026/06/260602021634.htm"
+class="uri">https://www.sciencedaily.com/releases/2026/06/260602021634.htm</a></li>
 <li>PsyPost — научно-популярный разбор того же исследования о подтипах
-аутизма.
-https://www.psypost.org/scientists-identify-two-distinct-biological-subtypes-of-autism-using-brain-scans/</li>
+аутизма. <a
+href="https://www.psypost.org/scientists-identify-two-distinct-biological-subtypes-of-autism-using-brain-scans/"
+class="uri">https://www.psypost.org/scientists-identify-two-distinct-biological-subtypes-of-autism-using-brain-scans/</a></li>
 <li>MedicalXpress — гамма-ритмы мозга и развитие речи у аутичных детей
-(UNIGE, Translational Psychiatry).
-https://medicalxpress.com/news/2026-06-brain-reveal-language-autistic-children.html</li>
+(UNIGE, Translational Psychiatry). <a
+href="https://medicalxpress.com/news/2026-06-brain-reveal-language-autistic-children.html"
+class="uri">https://medicalxpress.com/news/2026-06-brain-reveal-language-autistic-children.html</a></li>
 <li>ScienceDaily — шведское исследование о позднем диагнозе у девочек
-(BMJ, 2,7 млн человек).
-https://www.sciencedaily.com/releases/2026/02/260210082921.htm</li>
+(BMJ, 2,7 млн человек). <a
+href="https://www.sciencedaily.com/releases/2026/02/260210082921.htm"
+class="uri">https://www.sciencedaily.com/releases/2026/02/260210082921.htm</a></li>
 </ol>
 </section>
 <section id="россия-клинические-рекомендации-и-практика" class="level3">
 <h3>Россия: клинические рекомендации и практика</h3>
 <ol start="5" type="1">
 <li>Коммерсантъ — вторая редакция проекта РОП, изменения дозировок и
-позиции сторон (15.06.2026). https://www.kommersant.ru/doc/8737696</li>
+позиции сторон (15.06.2026). <a
+href="https://www.kommersant.ru/doc/8737696"
+class="uri">https://www.kommersant.ru/doc/8737696</a></li>
 <li>Vademecum — детальный разбор изменений параметров назначения
-лекарств (15.06.2026).
-https://www.vademec.ru/news/2026/06/15/v-proekte-kr-po-detskomu-autizmu-izmenili-parametry-naznacheniya-lekarstv/</li>
+лекарств (15.06.2026). <a
+href="https://www.vademec.ru/news/2026/06/15/v-proekte-kr-po-detskomu-autizmu-izmenili-parametry-naznacheniya-lekarstv/"
+class="uri">https://www.vademec.ru/news/2026/06/15/v-proekte-kr-po-detskomu-autizmu-izmenili-parametry-naznacheniya-lekarstv/</a></li>
 <li>«Аутизм-Регионы» — хроника конфликта КР, петиция, позиция
-родительского сообщества. https://autismregions.ru/clinrec</li>
+родительского сообщества. <a href="https://autismregions.ru/clinrec"
+class="uri">https://autismregions.ru/clinrec</a></li>
 <li>Милосердие.ru — что могут сделать родители в ситуации пересмотра КР
-(18.06.2026).
-https://www.miloserdie.ru/news/peresmotr-klinicheskih-rekomendacij-po-autizmu-chto-mozhno-sdelat/</li>
+(18.06.2026). <a
+href="https://www.miloserdie.ru/news/peresmotr-klinicheskih-rekomendacij-po-autizmu-chto-mozhno-sdelat/"
+class="uri">https://www.miloserdie.ru/news/peresmotr-klinicheskih-rekomendacij-po-autizmu-chto-mozhno-sdelat/</a></li>
 <li>Журнал «Аутизм и нарушения развития» (МГППУ), №1/2026 — обзор
-исследований ESDM.
-https://psyjournals.ru/journals/autdd/archive/2026_n1/Berezutskaya</li>
+исследований ESDM. <a
+href="https://psyjournals.ru/journals/autdd/archive/2026_n1/Berezutskaya"
+class="uri">https://psyjournals.ru/journals/autdd/archive/2026_n1/Berezutskaya</a></li>
 <li>Газета.ru — обзор приложений AAC для неговорящих детей (14.04.2026).
-https://www.gazeta.ru/amp/family/2026/04/14/22784263.shtml</li>
+<a href="https://www.gazeta.ru/amp/family/2026/04/14/22784263.shtml"
+class="uri">https://www.gazeta.ru/amp/family/2026/04/14/22784263.shtml</a></li>
 </ol>
 </section>
 <section id="мир-новости-и-политика" class="level3">
 <h3>Мир: новости и политика</h3>
 <ol start="11" type="1">
 <li>Новости ООН — конференция о старении аутичных людей; 90% старше 40
-без диагноза (15.06.2026).
-https://news.un.org/ru/story/2026/06/1468104</li>
+без диагноза (15.06.2026). <a
+href="https://news.un.org/ru/story/2026/06/1468104"
+class="uri">https://news.un.org/ru/story/2026/06/1468104</a></li>
 <li>The New York Times — передача спецобразования (IDEA) под ведомство
-HHS (20.06.2026).
-https://www.nytimes.com/2026/06/20/us/politics/special-education-rfk.html</li>
+HHS (20.06.2026). <a
+href="https://www.nytimes.com/2026/06/20/us/politics/special-education-rfk.html"
+class="uri">https://www.nytimes.com/2026/06/20/us/politics/special-education-rfk.html</a></li>
 <li>Mother Jones — реакция организаций по правам инвалидов на решение по
-IDEA (июнь 2026).
-https://www.motherjones.com/politics/2026/06/rfk-jr-disability-special-education-hhs-kennedy-autism/</li>
+IDEA (июнь 2026). <a
+href="https://www.motherjones.com/politics/2026/06/rfk-jr-disability-special-education-hhs-kennedy-autism/"
+class="uri">https://www.motherjones.com/politics/2026/06/rfk-jr-disability-special-education-hhs-kennedy-autism/</a></li>
 <li>National Autistic Society — кризис очередей на диагностику в Англии
-(270 701 человек).
-https://www.autism.org.uk/what-we-do/news/our-response-to-autism-assessment-waiting-times</li>
+(270 701 человек). <a
+href="https://www.autism.org.uk/what-we-do/news/our-response-to-autism-assessment-waiting-times"
+class="uri">https://www.autism.org.uk/what-we-do/news/our-response-to-autism-assessment-waiting-times</a></li>
 <li>FIFA — первый «сенсорно-инклюзивный» чемпионат мира по футболу 2026.
-https://inside.fifa.com/organisation/news/accessibility-world-cup-2026-disability-social-inclusion</li>
+<a
+href="https://inside.fifa.com/organisation/news/accessibility-world-cup-2026-disability-social-inclusion"
+class="uri">https://inside.fifa.com/organisation/news/accessibility-world-cup-2026-disability-social-inclusion</a></li>
 <li>Tengrinews — открытие десятого центра Qamqorlyq в Актау, Казахстан
-(19.06.2026).
-https://tengrinews.kz/kazakhstan_news/mangistau-otkryilsya-tsentr-detey-rasstroystvami-602003/</li>
+(19.06.2026). <a
+href="https://tengrinews.kz/kazakhstan_news/mangistau-otkryilsya-tsentr-detey-rasstroystvami-602003/"
+class="uri">https://tengrinews.kz/kazakhstan_news/mangistau-otkryilsya-tsentr-detey-rasstroystvami-602003/</a></li>
 <li>Beehive.govt.nz — первые социальные дома для аутичных людей в Новой
-Зеландии (02.06.2026).
-https://www.beehive.govt.nz/release/new-social-homes-autistic-people</li>
+Зеландии (02.06.2026). <a
+href="https://www.beehive.govt.nz/release/new-social-homes-autistic-people"
+class="uri">https://www.beehive.govt.nz/release/new-social-homes-autistic-people</a></li>
 <li>autisticprideday.org — Международный день гордости аутичных людей
-(18 июня). https://autisticprideday.org</li>
+(18 июня). <a href="https://autisticprideday.org"
+class="uri">https://autisticprideday.org</a></li>
 </ol>
 </section>
 <section id="доказательная-медицина-против-псевдонауки" class="level3">
 <h3>Доказательная медицина против псевдонауки</h3>
 <ol start="19" type="1">
 <li>Cochrane / PMC — систематический обзор хелирования при РАС: пользы
-нет, есть риски и смерти.
-https://pmc.ncbi.nlm.nih.gov/articles/PMC6457964/</li>
+нет, есть риски и смерти. <a
+href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6457964/"
+class="uri">https://pmc.ncbi.nlm.nih.gov/articles/PMC6457964/</a></li>
 <li>FDA — предупреждение об опасности MMS / хлордиоксида («не пейте
-отбеливатель»).
-https://www.fda.gov/consumers/consumer-updates/danger-dont-drink-miracle-mineral-solution-or-similar-products</li>
+отбеливатель»). <a
+href="https://www.fda.gov/consumers/consumer-updates/danger-dont-drink-miracle-mineral-solution-or-similar-products"
+class="uri">https://www.fda.gov/consumers/consumer-updates/danger-dont-drink-miracle-mineral-solution-or-similar-products</a></li>
 <li>ВОЗ — анализ GACVS: связи между вакцинами и аутизмом нет
-(11.12.2025).
-https://www.who.int/news/item/11-12-2025-who-expert-group-s-new-analysis-reaffirms-there-is-no-link-between-vaccines-and-autism</li>
+(11.12.2025). <a
+href="https://www.who.int/news/item/11-12-2025-who-expert-group-s-new-analysis-reaffirms-there-is-no-link-between-vaccines-and-autism"
+class="uri">https://www.who.int/news/item/11-12-2025-who-expert-group-s-new-analysis-reaffirms-there-is-no-link-between-vaccines-and-autism</a></li>
 <li>The Guardian — расследование рынка незарегистрированных инъекций
-стволовых клеток (12.06.2026).
-https://www.theguardian.com/society/2026/jun/12/autism-stem-cell-infusions-rfk-jr</li>
+стволовых клеток (12.06.2026). <a
+href="https://www.theguardian.com/society/2026/jun/12/autism-stem-cell-infusions-rfk-jr"
+class="uri">https://www.theguardian.com/society/2026/jun/12/autism-stem-cell-infusions-rfk-jr</a></li>
 <li>Autism Science Foundation — обзор недоказанных «методов лечения»
-аутизма.
-https://autismsciencefoundation.org/beware-of-non-evidence-based-treatments/</li>
+аутизма. <a
+href="https://autismsciencefoundation.org/beware-of-non-evidence-based-treatments/"
+class="uri">https://autismsciencefoundation.org/beware-of-non-evidence-based-treatments/</a></li>
 <li>ProPublica — FDA удалило предупреждения против опасных методов
-лечения аутизма (февраль 2026).
-https://www.propublica.org/article/rfk-jr-fda-removes-autism-treatments-warning</li>
+лечения аутизма (февраль 2026). <a
+href="https://www.propublica.org/article/rfk-jr-fda-removes-autism-treatments-warning"
+class="uri">https://www.propublica.org/article/rfk-jr-fda-removes-autism-treatments-warning</a></li>
 </ol>
 </section>
 <section id="живые-истории-и-медиа" class="level3">
 <h3>Живые истории и медиа</h3>
 <ol start="25" type="1">
 <li>«Фонтанка.ру» — история Евгении и её сына Вити, Санкт-Петербург
-(22.06.2026). https://www.fontanka.ru/2026/06/22/76491468/</li>
+(22.06.2026). <a href="https://www.fontanka.ru/2026/06/22/76491468/"
+class="uri">https://www.fontanka.ru/2026/06/22/76491468/</a></li>
 <li>«Комсомольская правда» — Анна Журавлёва, «Я семь лет жила в гонке»
-(16.06.2026). https://www.kp.ru/daily/277789.4/5263699/</li>
+(16.06.2026). <a href="https://www.kp.ru/daily/277789.4/5263699/"
+class="uri">https://www.kp.ru/daily/277789.4/5263699/</a></li>
 <li>Радио ВЕРА — сопровождаемое трудоустройство, история Кости в
-кото-кафе (26.05.2026).
-https://radiovera.ru/pomoch-ustroitsja-na-rabotu-vzroslym-ljudjam-s-autizmom.html</li>
+кото-кафе (26.05.2026). <a
+href="https://radiovera.ru/pomoch-ustroitsja-na-rabotu-vzroslym-ljudjam-s-autizmom.html"
+class="uri">https://radiovera.ru/pomoch-ustroitsja-na-rabotu-vzroslym-ljudjam-s-autizmom.html</a></li>
 <li>ABC — подкаст Грейс Тэйм «Autistic AF: Girls don’t get autism»
-(03.06.2026).
-https://www.abc.net.au/listen/programs/ladies-we-need-to-talk/girls-don-t-get-autism/106736860</li>
-<li>Netflix — документальный фильм «Room to Move» о Дженн Фриман.
-https://www.netflix.com/title/82748667</li>
+(03.06.2026). <a
+href="https://www.abc.net.au/listen/programs/ladies-we-need-to-talk/girls-don-t-get-autism/106736860"
+class="uri">https://www.abc.net.au/listen/programs/ladies-we-need-to-talk/girls-don-t-get-autism/106736860</a></li>
+<li>Netflix — документальный фильм «Room to Move» о Дженн Фриман. <a
+href="https://www.netflix.com/title/82748667"
+class="uri">https://www.netflix.com/title/82748667</a></li>
 <li>NPR — разбор фильма «Room to Move» и позднего диагноза (28.05.2026).
-https://www.npr.org/2026/05/28/nx-s1-5819550/jenn-freeman-film-room-to-move</li>
-<li>Netflix — реалити «Love on the Spectrum», сезон 4.
-https://www.netflix.com/title/81781241</li>
+<a
+href="https://www.npr.org/2026/05/28/nx-s1-5819550/jenn-freeman-film-room-to-move"
+class="uri">https://www.npr.org/2026/05/28/nx-s1-5819550/jenn-freeman-film-room-to-move</a></li>
+<li>Netflix — реалити «Love on the Spectrum», сезон 4. <a
+href="https://www.netflix.com/title/81781241"
+class="uri">https://www.netflix.com/title/81781241</a></li>
 <li>podcast.ru — российский подкаст «Все не как все», фонд «Открытая
-среда». https://podcast.ru/1614796062/e</li>
+среда». <a href="https://podcast.ru/1614796062/e"
+class="uri">https://podcast.ru/1614796062/e</a></li>
 <li>Агентство социальной информации — анонс нового сезона «Все не как
-все» (22.04.2026).
-https://asi.org.ru/report/2026/04/22/fond-otkrytaya-sreda-predstavil-novyi-sezon-podkasta-vse-ne-kak-vse/</li>
+все» (22.04.2026). <a
+href="https://asi.org.ru/report/2026/04/22/fond-otkrytaya-sreda-predstavil-novyi-sezon-podkasta-vse-ne-kak-vse/"
+class="uri">https://asi.org.ru/report/2026/04/22/fond-otkrytaya-sreda-predstavil-novyi-sezon-podkasta-vse-ne-kak-vse/</a></li>
 </ol>
 </section>
 </section>
@@ -1212,5 +1260,18 @@ https://asi.org.ru/report/2026/04/22/fond-otkrytaya-sreda-predstavil-novyi-sezon
 года. Материалы носят информационный характер и не заменяют консультацию специалиста.</em></p>
 </footer>
 </main>
+<script>
+;(() => {
+  const bar = document.querySelector('.reading-progress span');
+  if (!bar) return;
+  const update = () => {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    bar.style.width = (max > 0 ? (scrollY / max) * 100 : 0) + '%';
+  };
+  addEventListener('scroll', update, { passive: true });
+  addEventListener('resize', update, { passive: true });
+  update();
+})();
+</script>
 </body>
 </html>

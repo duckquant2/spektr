@@ -76,6 +76,10 @@ $if(description)$<meta name="twitter:description" content="$description$">$endif
     --accent:#0e7490;     /* основной цвет: ссылки, рубрики */
     --accent-2:#3b4f9e;   /* вторичный: конец градиента */
     --accent-ink:#0a5566; /* :hover */
+    /* цветовые остановки фирменного спектра */
+    --spectrum-stops:
+      #e4572e 0%, #f4a83a 17%, #f5d23c 33%, #4caf6d 50%,
+      #1aa3b0 67%, #3b6fd1 83%, var(--accent-2) 100%;
     --serif: Georgia, "PT Serif", "Noto Serif", "Times New Roman", serif;
     --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     --measure: 40rem;
@@ -106,18 +110,24 @@ $if(description)$<meta name="twitter:description" content="$description$">$endif
 
   /* ============ МАСТХЕД / ОБЛОЖКА ============ */
   h1{
+    position:relative; padding-left:.85rem;
     font-family:var(--sans); font-weight:800; color:var(--ink);
     font-size: clamp(2.6rem, 11vw, 4.4rem); line-height:.95;
     letter-spacing:-.02em; margin:0 0 .15em;
   }
-  /* фирменная «спектральная» радужная линейка над названием */
   h1::before{
-    content:""; display:block; height:5px; border-radius:3px;
-    margin:0 0 .9rem;
-    /* финальный стоп берём из токена --accent-2, чтобы линейка зависела от темы */
-    background:linear-gradient(90deg,
-      #e4572e 0%, #f4a83a 17%, #f5d23c 33%, #4caf6d 50%,
-      #1aa3b0 67%, #3b6fd1 83%, var(--accent-2) 100%);
+    content:""; position:absolute; left:0; top:.15em; bottom:.05em;
+    width:6px;
+    background:linear-gradient(180deg, var(--spectrum-stops));
+  }
+  /* фирменная спектральная полоса-индикатор прогресса чтения (заполняется при скролле) */
+  .reading-progress{
+    position:fixed; top:0; left:0; right:0; z-index:200;
+    height:4px; background:transparent;
+  }
+  .reading-progress span{
+    display:block; width:0; height:100%;
+    background:linear-gradient(90deg, var(--spectrum-stops));
   }
   /* дескриптор под названием */
   h1 + .deck{
@@ -254,7 +264,8 @@ $if(description)$<meta name="twitter:description" content="$description$">$endif
     html, body{ font-size:10.5pt; line-height:1.5; background:#fff; }
     .page{ max-width:none; margin:0; padding:0; }
     h1{ font-size:34pt; }
-    h1::before{ background:#000; height:4px; }
+    h1::before{ display:none !important; }
+    .reading-progress{ display:none !important; }
     h2{ font-size:19pt; break-before:page; border-top-color:#000; }
     h3{ font-size:13pt; }
     h2, h3, h4{ break-after:avoid; }
@@ -275,6 +286,7 @@ $if(description)$<meta name="twitter:description" content="$description$">$endif
 </style>
 </head>
 <body>
+<div aria-hidden="true" class="reading-progress"><span></span></div>
 <a href="#main" class="skip-link">Перейти к содержимому</a>
 <main class="page" id="main">
 <header class="masthead">
@@ -303,5 +315,18 @@ $body$
 <p><em>«СПЕКТР» — научно-популярный журнал об аутизме. Выпуск №$issue$ от $date-human$. Материалы носят информационный характер и не заменяют консультацию специалиста.</em></p>
 </footer>
 </main>
+<script>
+;(() => {
+  const bar = document.querySelector('.reading-progress span');
+  if (!bar) return;
+  const update = () => {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    bar.style.width = (max > 0 ? (scrollY / max) * 100 : 0) + '%';
+  };
+  addEventListener('scroll', update, { passive: true });
+  addEventListener('resize', update, { passive: true });
+  update();
+})();
+</script>
 </body>
 </html>
