@@ -5,23 +5,32 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Что это
 
 «СПЕКТР» — научно-популярный журнал об аутизме. Каждый выпуск — **один markdown-файл**
-`vypuski/spektr_vypusk_NN.md`, из которого pandoc собирает самодостаточную веб-страницу
-`html/spektr_vypusk_NN.html` (один файл, без внешних зависимостей: шрифты системные, стили и
-JSON-LD встроены в шаблон). Исходники `.md` лежат в `vypuski/`, готовые страницы — в `html/`.
-Контент ведёт нетехнический редактор; правится только `.md`.
+`src/spektr_vypusk_NN.md`, из которого pandoc собирает самодостаточную веб-страницу
+`dist/NN/index.html` (один файл, без внешних зависимостей: шрифты системные, стили и
+JSON-LD встроены в шаблон). Исходники `.md` лежат плоско в `src/`, готовый выпуск — в
+`dist/NN/` (подпапка названа номером выпуска: `01`, `02`…). Контент ведёт нетехнический
+редактор; правится только `.md`.
 
 ## Сборка
 
 ```bash
 ./builder/build.sh                       # собирает spektr_vypusk_01.md по умолчанию
 ./builder/build.sh spektr_vypusk_02.md   # собирает указанный выпуск
+./builder/build.sh 2                      # то же, по номеру выпуска
 ```
 
-Запускать из корня репозитория (где лежат `vypuski/` и `builder/`); исходник берётся из
-`vypuski/`, готовый `.html` пишется в `html/`. Требуется pandoc 3.x в PATH. Тестов нет —
-проверка визуальная: открыть `html/spektr_vypusk_NN.html` в браузере либо поднять
+Запускать из корня репозитория (где лежат `src/` и `builder/`); исходник берётся из
+`src/`, готовый выпуск пишется в `dist/NN/` (где `NN` — номер из имени файла:
+`spektr_vypusk_01.md` → `dist/01/`). Требуется pandoc 3.x в PATH. Тестов нет —
+проверка визуальная: открыть `dist/NN/index.html` в браузере либо поднять
 `python -m http.server 8765` (конфиг в `.claude/launch.json`, адрес
-`http://localhost:8765/html/spektr_vypusk_01.html`).
+`http://localhost:8765/dist/01/`).
+
+Рядом с `index.html` сборка кладёт печатный `dist/NN/spektr_vypusk_NN.pdf` (A4): это тот же готовый
+HTML, «распечатанный» в PDF через headless-браузер с системы (chrome-headless-shell из кеша
+Playwright → Edge → Chrome) — отдельной вёрстки нет, всё берётся из стилей `@media print` шаблона.
+Браузер нужен только для PDF; если его нет — `.html` всё равно собирается, а PDF пропускается с
+предупреждением. Отключить генерацию PDF: `SPEKTR_PDF=0 ./builder/build.sh`.
 
 YAML-шапка `.md` (`issue`, `date`, `date-human`, `pagetitle`, `description`, `deck`) — источник
 всех метаданных; кириллица берётся из файла в UTF-8, а **не** из аргументов командной строки —
