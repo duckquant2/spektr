@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>СПЕКТР · Научно-популярный журнал об аутизме · Архив выпусков</title>
+<meta name="description" content="СПЕКТР — научно-популярный журнал об аутизме для родителей. Архив всех выпусков.">
+<meta name="author" content="Редакция «СПЕКТРА»">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%23fff%22%2F%3E%3Crect%20y%3D%222%22%20width%3D%2216%22%20height%3D%221.5%22%20fill%3D%22%23e4572e%22%2F%3E%3Crect%20y%3D%223.5%22%20width%3D%2216%22%20height%3D%221.5%22%20fill%3D%22%23f4a83a%22%2F%3E%3Crect%20y%3D%225%22%20width%3D%2216%22%20height%3D%221.5%22%20fill%3D%22%23f5d23c%22%2F%3E%3Crect%20y%3D%226.5%22%20width%3D%2216%22%20height%3D%221.5%22%20fill%3D%22%234caf6d%22%2F%3E%3Crect%20y%3D%228%22%20width%3D%2216%22%20height%3D%221.5%22%20fill%3D%22%231aa3b0%22%2F%3E%3Crect%20y%3D%229.5%22%20width%3D%2216%22%20height%3D%221.5%22%20fill%3D%22%233b6fd1%22%2F%3E%3Crect%20y%3D%2211%22%20width%3D%2216%22%20height%3D%221.5%22%20fill%3D%22%238a4fd0%22%2F%3E%3Crect%20y%3D%2212.5%22%20width%3D%2216%22%20height%3D%221.5%22%20fill%3D%22%23e4572e%22%2F%3E%3C%2Fsvg%3E">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:site_name" content="СПЕКТР">
+<meta property="og:title" content="СПЕКТР · Архив выпусков">
+<style>
+  /* ============ ДИЗАЙН-ТОКЕНЫ (как в spektr-web.html5) ============ */
+  :root{
+    --ink:#181a1f; --body:#2b2e34; --muted:#6c7178; --rule:#e6e6e2;
+    --paper:#ffffff; --card:#eef6f6;
+    --accent:#0e7490; --accent-2:#3b4f9e; --accent-ink:#0a5566;
+    --spectrum-stops:
+      #e4572e 0%, #f4a83a 17%, #f5d23c 33%, #4caf6d 50%,
+      #1aa3b0 67%, #3b6fd1 83%, var(--accent-2) 100%;
+    --serif: Georgia, "PT Serif", "Noto Serif", "Times New Roman", serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --measure: 40rem;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --ink:#f0efec; --body:#dcdad4; --muted:#9a958c; --rule:#33322f;
+      --paper:#15161a; --card:#16262b;
+      --accent:#5fb3c4; --accent-2:#9aa8e6; --accent-ink:#8fd0dd;
+    }
+  }
+  *{ box-sizing:border-box; }
+  html{ -webkit-text-size-adjust:100%; overflow-x:hidden; }
+  body{
+    margin:0; background:var(--paper); color:var(--body);
+    font-family:var(--serif);
+    font-size: clamp(1.0625rem, 1rem + 0.35vw, 1.1875rem);
+    line-height:1.7; text-rendering:optimizeLegibility;
+    -webkit-font-smoothing:antialiased; overflow-wrap:break-word;
+  }
+  .page{ max-width:var(--measure); margin:0 auto; padding:2.2rem 1.25rem 4rem; }
+
+  h1{
+    position:relative; padding-left:.85rem;
+    font-family:var(--sans); font-weight:800; color:var(--ink);
+    font-size: clamp(2.6rem, 11vw, 4.4rem); line-height:.95;
+    letter-spacing:-.02em; margin:0 0 .15em;
+  }
+  h1::before{
+    content:""; position:absolute; left:0; top:.15em; bottom:.05em;
+    width:6px; background:linear-gradient(180deg, var(--spectrum-stops));
+  }
+  h1 + .deck{
+    font-family:var(--sans); font-weight:700; text-transform:uppercase;
+    letter-spacing:.08em; font-size:.78rem; color:var(--accent);
+    margin:.2rem 0 1.2rem;
+  }
+  hr{ border:0; height:1px; background:var(--rule); margin:1.8rem 0; }
+  .lead{ margin:0 0 2rem; }
+
+  h2{
+    font-family:var(--sans); font-weight:800; color:var(--ink);
+    font-size: clamp(1.5rem, 5vw, 2.05rem); line-height:1.1;
+    letter-spacing:-.01em; margin:2.6rem 0 1.4rem; padding-top:1rem;
+    border-top:3px solid var(--accent);
+  }
+
+  /* ============ СПИСОК ВЫПУСКОВ ============ */
+  .issues{ list-style:none; margin:0; padding:0; }
+  .issue{ margin:0 0 1rem; }
+  .issue-link{
+    display:block; padding:1.1rem 1.3rem;
+    background:var(--card); border-left:3px solid var(--accent);
+    border-radius:4px; color:var(--body); text-decoration:none;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .issue-link:hover, .issue-link:focus-visible{
+    box-shadow:0 6px 18px color-mix(in srgb, var(--ink) 14%, transparent);
+    transform:translateY(-1px);
+  }
+  .issue-link:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .issue-no{
+    display:block; font-family:var(--sans); font-weight:800; color:var(--ink);
+    font-size:1.3rem; line-height:1.1; letter-spacing:-.01em;
+  }
+  .issue-date{
+    display:block; font-family:var(--sans); font-size:.82rem; color:var(--muted);
+    margin:.25rem 0 0;
+  }
+  .issue-descr{ display:block; font-size:.97rem; margin:.55rem 0 0; }
+
+  .empty{ color:var(--muted); font-style:italic; }
+  .colophon{ font-family:var(--sans); font-size:.85rem; color:var(--muted); }
+
+  @media (max-width:560px){
+    .page{ padding:1.8rem 1.05rem 3rem; }
+  }
+</style>
+</head>
+<body>
+<main class="page">
+<header>
+<h1>СПЕКТР</h1>
+<p class="deck">Научно-популярный журнал об аутизме</p>
+<p class="lead">Журнал для вдумчивых родителей детей с РАС. Раз в месяц — о науке, новостях, доказательных методах помощи и живых историях. Каждое утверждение сопровождается ссылкой на источник.</p>
+<hr>
+</header>
+<h2>Архив выпусков</h2>
+<ol class="issues">
+<li class="issue"><a class="issue-link" href="01/"><span class="issue-no">Выпуск №1</span><time class="issue-date" datetime="2026-06-22">22 июня 2026 года</time><span class="issue-descr">СПЕКТР — научно-популярный журнал об аутизме для родителей. Выпуск №1: новости, наука, доказательные методы, живые истории, культура. 22 июня 2026.</span></a></li>
+</ol>
+<hr>
+<footer class="colophon">
+<p><em>«СПЕКТР» — научно-популярный журнал об аутизме. Материалы носят информационный характер и не заменяют консультацию специалиста.</em></p>
+</footer>
+</main>
+</body>
+</html>

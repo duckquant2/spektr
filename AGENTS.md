@@ -36,12 +36,34 @@ YAML-шапка `.md` (`issue`, `date`, `date-human`, `pagetitle`, `description`
 всех метаданных; кириллица берётся из файла в UTF-8, а **не** из аргументов командной строки —
 так специально сделано, иначе она ломается на Windows. Файлы `.md` обязаны быть в UTF-8.
 
+## Публикация (GitHub Pages)
+
+Сайт выложен на GitHub Pages из папки `dist/` (она и есть корень сайта):
+`dist/index.html` → `…/spektr/`, `dist/NN/index.html` → `…/spektr/NN/`. Адрес —
+`https://duckquant2.github.io/spektr/`.
+
+Схема: **собираем локально, CI только публикует.** Редактор запускает `build.sh`,
+коммитит готовый `dist/` и пушит в `main`; workflow ничего не собирает — берёт `dist/`
+как есть и деплоит. Поэтому `dist/` **остаётся** в git.
+
+- **`.github/workflows/pages.yml`** — на `push` в `main` по путям `dist/**` выкладывает
+  `dist/` через `upload-pages-artifact` + `deploy-pages` (плюс `workflow_dispatch`).
+  Сборки pandoc/PDF в CI нет.
+- **`builder/build-index.sh`** — генерирует главную `dist/index.html` (архив со ссылками
+  на выпуски): сканирует `dist/NN/` и тянет метаданные (`issue`, `date`, `date-human`,
+  `description`) из YAML-шапки `src/spektr_vypusk_NN.md`. **`build.sh` вызывает его в конце**,
+  так что главная освежается при каждой сборке. Разбор YAML — по структуре строк (режет
+  только ASCII-кавычки/пробелы), кириллица из файла в UTF-8; не передавай её аргументами.
+- **`dist/.nojekyll`** — отключает обработку Jekyll на Pages.
+
+Разовая настройка в GitHub: **Settings → Pages → Source = GitHub Actions**.
+
 ## Архитектура сборки
 
 Три файла в `builder/` работают вместе, превращая обычный markdown в фирменную семантику макета:
 
 - **`build.sh`** — вызывает pandoc с шаблоном, lua-фильтром и `--section-divs`
-  (каждая рубрика оборачивается в `<section id>`).
+  (каждая рубрика оборачивается в `<section id>`); в конце обновляет главную через `build-index.sh`.
 - **`spektr-web.html5`** — pandoc-шаблон: весь `<head>`, встроенный `<style>` (дизайн-токены,
   светлая/тёмная тема, печатные стили `@media print`), обложка-masthead и **жёстко зашитое
   оглавление из 8 рубрик**. Тело выпуска подставляется в `$body$`.
