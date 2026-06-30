@@ -144,7 +144,7 @@ cat > "$OUT" <<HTML
     letter-spacing:-.02em; margin:0 0 .15em;
   }
   h1::before{
-    content:""; position:absolute; left:0; top:.15em; bottom:.05em;
+    content:""; position:absolute; left:0; top:.15em; height:.75em;
     width:6px; background:linear-gradient(180deg, var(--spectrum-stops));
   }
   h1 + .deck{
