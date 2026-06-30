@@ -14,7 +14,7 @@ $if(description)$<meta name="description" content="$description$">$endif$
 <meta property="og:title" content="$if(pagetitle)$$pagetitle$$else$СПЕКТР$endif$">
 $if(description)$<meta property="og:description" content="$description$">$endif$
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="СПЕКТР · Выпуск №$issue$">
+<meta name="twitter:title" content="$if(pagetitle)$$pagetitle$$else$СПЕКТР$endif$">
 $if(description)$<meta name="twitter:description" content="$description$">$endif$
 <script type="application/ld+json">
 {
@@ -38,7 +38,7 @@ $if(description)$<meta name="twitter:description" content="$description$">$endif
       "@type": "PublicationIssue",
       "@id": "#issue",
       "isPartOf": { "@id": "#periodical" },
-      "issueNumber": $issue$,
+      "issueNumber": "$issue$",
       "datePublished": "$date$",
       "inLanguage": "ru",
       "publisher": { "@id": "#org" }
@@ -368,11 +368,17 @@ $body$
       topBtn.classList.toggle('is-visible', scrollY > innerHeight * 0.5);
     }
   };
-  addEventListener('scroll', update, { passive: true });
-  addEventListener('resize', update, { passive: true });
+  // батчинг: чтение scrollHeight (форсирует пересчёт макета) делаем не чаще кадра
+  let ticking = false;
+  const requestUpdate = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => { ticking = false; update(); });
+  };
+  addEventListener('scroll', requestUpdate, { passive: true });
+  addEventListener('resize', requestUpdate, { passive: true });
   addEventListener('load', update, { once: true });
   update();
-  requestAnimationFrame(update);
 
   if (topBtn) {
     topBtn.addEventListener('click', (e) => {

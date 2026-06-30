@@ -19,7 +19,8 @@
 журнал об аутизме для родителей. Выпуск №1: новости, наука,
 доказательные методы, живые истории, культура. 22 июня 2026.">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="СПЕКТР · Выпуск №1">
+<meta name="twitter:title" content="СПЕКТР · Научно-популярный журнал об
+аутизме · Выпуск №1">
 <meta name="twitter:description" content="СПЕКТР — научно-популярный
 журнал об аутизме для родителей. Выпуск №1: новости, наука,
 доказательные методы, живые истории, культура. 22 июня 2026.">
@@ -45,7 +46,7 @@
       "@type": "PublicationIssue",
       "@id": "#issue",
       "isPartOf": { "@id": "#periodical" },
-      "issueNumber": 1,
+      "issueNumber": "1",
       "datePublished": "2026-06-22",
       "inLanguage": "ru",
       "publisher": { "@id": "#org" }
@@ -1313,11 +1314,17 @@ class="uri">https://asi.org.ru/report/2026/04/22/fond-otkrytaya-sreda-predstavil
       topBtn.classList.toggle('is-visible', scrollY > innerHeight * 0.5);
     }
   };
-  addEventListener('scroll', update, { passive: true });
-  addEventListener('resize', update, { passive: true });
+  // батчинг: чтение scrollHeight (форсирует пересчёт макета) делаем не чаще кадра
+  let ticking = false;
+  const requestUpdate = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => { ticking = false; update(); });
+  };
+  addEventListener('scroll', requestUpdate, { passive: true });
+  addEventListener('resize', requestUpdate, { passive: true });
   addEventListener('load', update, { once: true });
   update();
-  requestAnimationFrame(update);
 
   if (topBtn) {
     topBtn.addEventListener('click', (e) => {
