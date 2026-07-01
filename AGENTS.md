@@ -39,8 +39,9 @@ YAML-шапка `.md` (`issue`, `date`, `date-human`, `pagetitle`, `description`
 ## Публикация (GitHub Pages)
 
 Сайт выложен на GitHub Pages из папки `dist/` (она и есть корень сайта):
-`dist/index.html` → `…/spektr/`, `dist/NN/index.html` → `…/spektr/NN/`. Адрес —
-`https://duckquant2.github.io/spektr/`.
+`dist/index.html` → `https://sp-j.ru/`, `dist/NN/index.html` → `https://sp-j.ru/NN/`.
+Основной адрес — `https://sp-j.ru/` (домен на reg.ru, привязан через `dist/CNAME`).
+Прежний адрес `https://duckquant2.github.io/spektr/` работает и редиректит на `sp-j.ru`.
 
 Схема: **собираем локально, CI только публикует.** Редактор запускает `build.sh`,
 коммитит готовый `dist/` и пушит в `main`; workflow ничего не собирает — берёт `dist/`
@@ -55,6 +56,9 @@ YAML-шапка `.md` (`issue`, `date`, `date-human`, `pagetitle`, `description`
   так что главная освежается при каждой сборке. Разбор YAML — по структуре строк (режет
   только ASCII-кавычки/пробелы), кириллица из файла в UTF-8; не передавай её аргументами.
 - **`dist/.nojekyll`** — отключает обработку Jekyll на Pages.
+- **`dist/CNAME`** — привязывает домен `sp-j.ru`. Лежит именно в `dist/`, т.к. деплой идёт
+  из артефакта этой папки (а не из ветки), и GitHub видит только её содержимое. `build.sh`
+  папку `dist/` не чистит, поэтому файл переживает пересборки.
 
 Разовая настройка в GitHub: **Settings → Pages → Source = GitHub Actions**.
 
