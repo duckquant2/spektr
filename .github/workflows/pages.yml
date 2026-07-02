@@ -31,11 +31,13 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Configure Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
+      # Начиная с v4 экшен не кладёт dotfiles в артефакт — поэтому .nojekyll
+      # в dist/ не нужен (Jekyll при деплое через Actions и так не запускается).
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: dist
       # Экшен ждёт публикацию максимум 10 мин — это захардкоженный MAX_TIMEOUT
@@ -45,4 +47,4 @@ jobs:
       # GitHub (см. githubstatus.com): дождаться восстановления и перезапустить прогон.
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
