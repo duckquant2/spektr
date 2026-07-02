@@ -74,9 +74,10 @@ for NN in $NUMS; do
   title="$(html_escape "Выпуск №$issue")"
   descr_html="$(html_escape "$descr")"
   date_html="$(html_escape "$date_human")"
+  pdf_file="spektr_vypusk_$NN.pdf"
 
   CARDS+="<li class=\"issue\">"
-  CARDS+="<a class=\"issue-link\" href=\"$NN/\">"
+  CARDS+="<article class=\"issue-card\">"
   CARDS+="<span class=\"issue-no\">$title</span>"
   if [ -n "$date_html" ]; then
     CARDS+="<time class=\"issue-date\" datetime=\"$date_iso\">$date_html</time>"
@@ -84,7 +85,13 @@ for NN in $NUMS; do
   if [ -n "$descr_html" ]; then
     CARDS+="<span class=\"issue-descr\">$descr_html</span>"
   fi
-  CARDS+="</a></li>"$'\n'
+  CARDS+="<span class=\"issue-actions\">"
+  CARDS+="<a class=\"issue-button issue-button-primary\" href=\"$NN/\">ЧИТАТЬ ОНЛАЙН</a>"
+  if [ -f "$DIST_DIR/$NN/$pdf_file" ]; then
+    CARDS+="<a class=\"issue-button issue-button-secondary\" href=\"$NN/$pdf_file\" download>СКАЧАТЬ PDF</a>"
+  fi
+  CARDS+="</span>"
+  CARDS+="</article></li>"$'\n'
 done
 
 # --- Записать страницу ---------------------------------------------------------
@@ -165,17 +172,17 @@ cat > "$OUT" <<HTML
   /* ============ СПИСОК ВЫПУСКОВ ============ */
   .issues{ list-style:none; margin:0; padding:0; }
   .issue{ margin:0 0 1rem; }
-  .issue-link{
+  .issue-card{
     display:block; padding:1.1rem 1.3rem;
     background:var(--card); border-left:3px solid var(--accent);
-    border-radius:4px; color:var(--body); text-decoration:none;
+    border-radius:4px; color:var(--body);
     transition:transform .15s ease, box-shadow .15s ease;
   }
-  .issue-link:hover, .issue-link:focus-visible{
+  .issue-card:has(.issue-button:hover),
+  .issue-card:has(.issue-button:focus-visible){
     box-shadow:0 6px 18px color-mix(in srgb, var(--ink) 14%, transparent);
     transform:translateY(-1px);
   }
-  .issue-link:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
   .issue-no{
     display:block; font-family:var(--sans); font-weight:800; color:var(--ink);
     font-size:1.3rem; line-height:1.1; letter-spacing:-.01em;
@@ -185,12 +192,41 @@ cat > "$OUT" <<HTML
     margin:.25rem 0 0;
   }
   .issue-descr{ display:block; font-size:.97rem; margin:.55rem 0 0; }
+  .issue-actions{
+    display:flex; flex-wrap:wrap; gap:.55rem; margin:1rem 0 0;
+    font-family:var(--sans);
+  }
+  .issue-button{
+    display:inline-flex; align-items:center; justify-content:center;
+    min-height:2.3rem; padding:.55rem .85rem; border-radius:4px;
+    border:1px solid var(--accent); font-size:.78rem; font-weight:700;
+    line-height:1; letter-spacing:.06em; text-decoration:none;
+    transition:background-color .15s ease, border-color .15s ease, color .15s ease,
+      transform .15s ease;
+  }
+  .issue-button:hover{ transform:translateY(-1px); }
+  .issue-button:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .issue-button-primary{
+    background:var(--accent); color:#fff; border-color:var(--accent);
+  }
+  .issue-button-primary:hover, .issue-button-primary:focus-visible{
+    background:var(--accent-ink); border-color:var(--accent-ink);
+  }
+  .issue-button-secondary{
+    background:transparent;
+    color:var(--accent);
+  }
+  .issue-button-secondary:hover, .issue-button-secondary:focus-visible{
+    background:transparent; border-color:var(--accent); color:var(--accent-ink);
+  }
 
   .empty{ color:var(--muted); font-style:italic; }
   .colophon{ font-family:var(--sans); font-size:.85rem; color:var(--muted); }
 
   @media (max-width:560px){
     .page{ padding:1.8rem 1.05rem 3rem; }
+    .issue-actions{ display:grid; grid-template-columns:1fr; }
+    .issue-button{ width:100%; }
   }
 </style>
 </head>

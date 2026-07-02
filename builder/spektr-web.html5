@@ -177,6 +177,49 @@ $if(description)$<meta name="twitter:description" content="$description$">$endif
   .date, .colophon{
     font-family:var(--sans); font-size:.85rem; color:var(--muted);
   }
+  .issue-actions{
+    display:flex; flex-wrap:wrap; align-items:center; gap:.65rem;
+    margin:1.15rem 0 1.45rem;
+    font-family:var(--sans);
+  }
+  .issue-action{
+    display:inline-flex; align-items:center; justify-content:center;
+    gap:.45rem; min-height:2.25rem; padding:0 .85rem;
+    border:1px solid color-mix(in srgb, var(--accent) 42%, transparent);
+    border-radius:4px;
+    color:var(--accent); background:transparent;
+    font-family:var(--sans); font-size:.86rem; font-weight:700; line-height:1;
+    text-decoration:none; white-space:nowrap; cursor:pointer;
+  }
+  a.issue-action{ border-bottom:1px solid color-mix(in srgb, var(--accent) 42%, transparent); overflow-wrap:normal; }
+  .issue-action:hover,
+  .issue-action:focus-visible{
+    color:var(--accent-ink);
+    border-color:currentColor;
+  }
+  .issue-action:focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:2px;
+  }
+  .issue-action--print{
+    padding-left:0;
+    border:0;
+  }
+  .issue-action--print:hover{
+    border:0;
+  }
+  .issue-action__icon{
+    width:1rem; height:1rem; flex:0 0 auto;
+    stroke:currentColor; stroke-width:2; fill:none;
+    stroke-linecap:round; stroke-linejoin:round;
+  }
+  .issue-action--primary{
+    color:#fff; background:var(--accent); border-color:var(--accent);
+  }
+  .issue-action--primary:hover,
+  .issue-action--primary:focus-visible{
+    color:#fff; background:var(--accent-ink); border-color:var(--accent-ink);
+  }
 
   /* ============ РУБРИКИ (## 01 · ...) ============ */
   h2{
@@ -305,6 +348,7 @@ $if(description)$<meta name="twitter:description" content="$description$">$endif
     h1::before{ display:none !important; }
     .reading-progress{ display:none !important; }
     .back-to-top{ display:none !important; }
+    .issue-actions{ display:none !important; }
     h2{ font-size:19pt; break-before:page; border-top-color:#000; }
     h3{ font-size:13pt; }
     h2, h3, h4{ break-after:avoid; }
@@ -333,6 +377,10 @@ $if(description)$<meta name="twitter:description" content="$description$">$endif
 <h1 id="спектр">СПЕКТР</h1>
 <p class="deck">$if(deck)$$deck$$else$Научно-популярный журнал об аутизме · Выпуск №$issue$$endif$</p>
 <p class="date"><time datetime="$date$">$date-human$</time></p>
+<div class="issue-actions" aria-label="Действия с выпуском">
+<button type="button" class="issue-action issue-action--print" data-print-page><svg class="issue-action__icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg><span>Печатная версия</span></button>
+<a class="issue-action issue-action--primary" href="./$if(pdf-file)$$pdf-file$$else$spektr_vypusk_$issue$.pdf$endif$" target="_blank" rel="noopener">Скачать PDF</a>
+</div>
 <hr />
 <nav aria-label="Содержание выпуска">
 <p>В этом выпуске:</p>
@@ -359,6 +407,7 @@ $body$
 ;(() => {
   const bar = document.querySelector('.reading-progress span');
   const topBtn = document.querySelector('[data-back-to-top]');
+  const printBtn = document.querySelector('[data-print-page]');
   const update = () => {
     if (bar) {
       const max = document.documentElement.scrollHeight - innerHeight;
@@ -386,6 +435,13 @@ $body$
       const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
       window.scrollTo({ top: 0, behavior: prefersReduced ? 'auto' : 'smooth' });
       topBtn.blur();
+    });
+  }
+
+  if (printBtn) {
+    printBtn.addEventListener('click', () => {
+      window.print();
+      printBtn.blur();
     });
   }
 })();

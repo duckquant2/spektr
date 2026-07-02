@@ -41,6 +41,7 @@ pandoc "$SRC" \
   --lua-filter "$HERE/spektr-filters.lua" \
   --section-divs \
   --metadata lang=ru \
+  --metadata "pdf-file=spektr_vypusk_$NN.pdf" \
   -o "$OUT"
 
 echo "Готово: $OUT"
