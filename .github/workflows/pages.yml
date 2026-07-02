@@ -41,3 +41,8 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          # Ждать подтверждения публикации до 30 мин: очередь бэкенда Pages
+          # бывает медленной, и при дефолтных 10 мин шаг падал по таймауту,
+          # хотя сайт при этом успешно обновлялся.
+          timeout: 1800000
