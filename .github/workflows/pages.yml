@@ -38,11 +38,11 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist
+      # Экшен ждёт публикацию максимум 10 мин — это захардкоженный MAX_TIMEOUT
+      # внутри deploy-pages, input `timeout` больше этого значения молча обрезается,
+      # поэтому увеличивать его бессмысленно. Если шаг упал с «Timeout reached,
+      # aborting!» при статусе deployment_queued — это затор очереди на стороне
+      # GitHub (см. githubstatus.com): дождаться восстановления и перезапустить прогон.
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-        with:
-          # Ждать подтверждения публикации до 30 мин: очередь бэкенда Pages
-          # бывает медленной, и при дефолтных 10 мин шаг падал по таймауту,
-          # хотя сайт при этом успешно обновлялся.
-          timeout: 1800000
