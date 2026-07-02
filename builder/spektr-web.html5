@@ -301,7 +301,7 @@ $if(description)$<meta name="twitter:description" content="$description$">$endif
     }
     html, body{ font-size:10.5pt; line-height:1.5; background:#fff; }
     .page{ max-width:none; margin:0; padding:0; }
-    h1{ font-size:34pt; }
+    h1{ font-size:34pt; padding-left:0; }
     h1::before{ display:none !important; }
     .reading-progress{ display:none !important; }
     .back-to-top{ display:none !important; }
